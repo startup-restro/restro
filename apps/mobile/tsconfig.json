@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "composite": false,
+    "strict": true,
+    "paths": {
+      "@restroverse/shared": ["../../packages/shared/src"],
+      "@restroverse/shared/*": ["../../packages/shared/src/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", "index.js", ".expo/types/**/*.ts"],
+  "exclude": ["node_modules", "android", "ios"]
+}
