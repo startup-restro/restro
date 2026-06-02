@@ -38,10 +38,19 @@ Replace paper billing for 1,000 restaurants in Nepal:
 - Android tablet app
 - QR menu (view only)
 
-## Project Tracking
-- Obsidian vault at: `/Users/ethan/restroverse/.obsidian/`
-- Task board: `.obsidian/` files + `project-tracking/` directory
-- This CLAUDE.md = context for AI session resumption
+## Documentation Map
+```
+docs/README.md                          ← Start here for full map
+docs/features/01-15 *.md                ← 15 feature spec docs (275 features total)
+docs/architecture/DATABASE_AND_API.md   ← 50+ tables, 150 endpoints
+docs/architecture/INFRASTRUCTURE_AND_AI.md ← Infra, security, AI
+docs/requirements/FUNDAMENTAL_REQUIREMENTS.md ← 275 FR + 35 NFR
+docs/wireframes/ALL_WIREFRAMES.md       ← 17 screens
+project-tracking/TASK_BOARD.md          ← Jira-style tasks (250+ subtasks)
+project-tracking/FEATURE_MAP.md         ← All features in one table
+project-tracking/SPRINT_CURRENT.md      ← Current sprint kanban
+project-tracking/DECISIONS_LOG.md       ← ADRs
+```
 
 ## Key Architecture Decisions
 1. Offline-first with CRDT sync (SQLite local + PostgreSQL cloud)
