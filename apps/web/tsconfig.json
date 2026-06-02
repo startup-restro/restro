@@ -2,7 +2,11 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "ESNext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "ESNext"
+    ],
     "module": "ESNext",
     "jsx": "preserve",
     "noEmit": true,
@@ -14,11 +18,27 @@
       }
     ],
     "paths": {
-      "@/*": ["./app/*", "./src/*"],
-      "@restroverse/shared": ["../../packages/shared/src"],
-      "@restroverse/shared/*": ["../../packages/shared/src/*"]
-    }
+      "@/*": [
+        "./app/*",
+        "./src/*"
+      ],
+      "@restroverse/shared": [
+        "../../packages/shared/src"
+      ],
+      "@restroverse/shared/*": [
+        "../../packages/shared/src/*"
+      ]
+    },
+    "allowJs": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", ".next"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next"
+  ]
 }
