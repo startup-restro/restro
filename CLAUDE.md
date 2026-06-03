@@ -3,93 +3,90 @@
 ## What is this project?
 RestroVerse = "Operating System for Asian Restaurants" - offline-first, AI-native POS & restaurant management platform targeting Nepal, India, Bangladesh, SE Asia. Replaces paper billing for 11M+ restaurants. Runs on $80 Android tablets.
 
-## Current State: PRE-DEVELOPMENT (Planning & Setup Complete)
-- Product spec: DONE (1146 lines)
-- DB schema: DONE (PostgreSQL, 50+ tables, copy-paste SQL)
-- API design: DONE (~150 endpoints)
-- Wireframes: DONE (17 screens)
-- Requirements: DONE (275 FR + 35 NFR + 18 constraints)
-- Infrastructure: DONE (Docker, K8s, CI/CD configs)
-- AI pipeline: DONE (voice, OCR, forecasting, anomaly detection)
-- Code: NOTHING WRITTEN YET - `prototype/` and `design-system/` dirs are empty
+## Current State: Sprint 1 COMPLETE, Sprint 2 READY
+
+### Completed
+- **Sprint 0** (Foundation): Turborepo monorepo, Docker dev env, GitHub Actions CI, full DB schema (39 tables, 102 RLS policies), seed data
+- **Sprint 1** (Auth + Menu API): Phone OTP auth, RBAC (24 perms, 6 roles), restaurant onboarding, menu CRUD, public menu - all runtime-tested
+
+### What exists (code)
+```
+apps/api/src/
+├── index.ts, app.ts             # Fastify server entry + plugin registration
+├── plugins/                     # db.ts (drizzle), redis.ts, jwt.ts
+├── middleware/                   # auth.ts (JWT + RLS), rbac.ts (permissions)
+├── routes/
+│   ├── auth.ts                  # send-otp, verify-otp, refresh, staff-pin, me, logout
+│   ├── restaurants.ts           # POST/GET/PUT restaurants, settings, complete-onboarding
+│   └── menu.ts                  # categories/items/variants/modifiers CRUD, public menu
+└── types/fastify.d.ts           # Type augmentations
+
+packages/db/src/schema/          # 13 Drizzle schema files (~1,400 lines)
+packages/shared/src/             # Types, constants, enums matching DB
+
+docker/init.sql                  # 1,275 lines - 39 tables, 17 enums, 58 indexes
+docker/seed.sql                  # "Momo House Thamel" - 20 items, 10 tables, 5 staff
+```
+
+### Runtime-verified endpoints
+- `GET /health` - OK
+- `POST /auth/send-otp` -> `POST /auth/verify-otp` -> tokens + user
+- `GET /auth/me` - user, restaurant, 24 permissions
+- `POST /auth/refresh` - token rotation
+- `POST /auth/logout` - revokes refresh token
+- `GET /restaurants/:id` / `PUT /restaurants/:id` - CRUD
+- `GET /menu/categories` - 6 categories
+- `GET /menu/items` - paginated items
+- `GET /menu/public/:slug` - public menu (6 cats, 20 items, variants)
+
+### Next: Sprint 2
+- RV-010: Order CRUD API (create, list, update, void, send-to-kitchen)
+- RV-018: Table Management API (spaces/tables CRUD, status, merge/transfer)
+- RV-012: Kitchen API (tickets, bump, prep time tracking)
 
 ## Tech Stack
 - Mobile/POS: React Native + Expo (Android tablet/phone)
 - Web Dashboard: Next.js 15
-- Customer Web: Next.js SSR
-- Offline DB: WatermelonDB (SQLite) + CRDT
-- API: Node.js + Fastify (modular monolith)
-- DB: PostgreSQL 16 + Redis + ClickHouse (analytics)
-- AI: Python + FastAPI (Whisper, Tesseract, Prophet, LightGBM)
+- API: Fastify + Drizzle ORM + PostgreSQL 16
+- Cache: Redis 7 (OTP, sessions, rate limiting)
 - Storage: MinIO (S3-compatible)
-- Queue: NATS
-- Infra: Docker -> K8s, GitHub Actions CI/CD
+- Queue: NATS 2.10
+- Offline DB: WatermelonDB (future Sprint 5)
+- Monorepo: Turborepo + pnpm
 
-## Phase 1 Target (Months 1-3): "WALK"
-Replace paper billing for 1,000 restaurants in Nepal:
-- Core POS (order -> kitchen -> bill)
-- Offline-first with local WiFi sync
-- Basic menu/table management
-- KOT printing (thermal printer)
-- Nepal IRD-compliant billing (13% VAT)
-- eSewa + Khalti payment
-- Cash management
-- Basic daily sales report
-- Android tablet app
-- QR menu (view only)
-
-## Documentation Map
-```
-docs/README.md                          ← Start here for full map
-docs/features/01-15 *.md                ← 15 feature spec docs (275 features total)
-docs/architecture/DATABASE_AND_API.md   ← 50+ tables, 150 endpoints
-docs/architecture/INFRASTRUCTURE_AND_AI.md ← Infra, security, AI
-docs/requirements/FUNDAMENTAL_REQUIREMENTS.md ← 275 FR + 35 NFR
-docs/wireframes/ALL_WIREFRAMES.md       ← 17 screens
-project-tracking/TASK_BOARD.md          ← Jira-style tasks (250+ subtasks)
-project-tracking/FEATURE_MAP.md         ← All features in one table
-project-tracking/SPRINT_CURRENT.md      ← Current sprint kanban
-project-tracking/DECISIONS_LOG.md       ← ADRs
-```
+## Docker Services (docker-compose.dev.yml)
+| Service | Container | Port |
+|---------|-----------|------|
+| PostgreSQL 16 | rv-postgres | 5432 |
+| Redis 7 | rv-redis | 6379 |
+| MinIO | rv-minio | 9000/9001 |
+| NATS 2.10 | rv-nats | 4222/8222 |
 
 ## Key Architecture Decisions
 1. Offline-first with CRDT sync (SQLite local + PostgreSQL cloud)
 2. Local WiFi mesh (mDNS + WebSocket) for multi-device sync without internet
 3. Modular monolith (not microservices) initially
 4. Multi-tenant with PostgreSQL Row-Level Security
-5. Edge AI on-device (Whisper small ONNX ~150MB + Tesseract ~30MB)
-6. Phone OTP auth (no email required)
-7. Single APK for POS/Waiter/KDS (mode-switched)
+5. Phone OTP auth (no email required)
+6. Single APK for POS/Waiter/KDS (mode-switched)
 
-## Development Phases (see project-tracking/ for detailed tasks)
-- Sprint 0: Project scaffold, tooling, dev environment
-- Sprint 1: Core data models + basic API + auth
-- Sprint 2: POS UI + menu + order flow
-- Sprint 3: Kitchen display + KOT printing
-- Sprint 4: Billing + payments + tax
-- Sprint 5: Offline sync engine + local WiFi mesh
-- Sprint 6: Table management + basic analytics
-- Sprint 7: QR menu + customer web
-- Sprint 8: Integration testing + Nepal pilot prep
-
-## File Structure (planned)
+## Documentation Map
 ```
-restroverse/
-├── apps/
-│   ├── api/          # Fastify backend (Node.js)
-│   ├── web/          # Next.js owner dashboard
-│   ├── mobile/       # React Native (POS/Waiter/KDS)
-│   ├── ai/           # FastAPI AI service (Python)
-│   └── customer-web/ # Next.js customer ordering
-├── packages/
-│   ├── shared/       # Shared types, utils, constants
-│   ├── db/           # Drizzle ORM schema + migrations
-│   └── ui/           # Shared UI components
-├── docker/           # Dockerfiles
-├── k8s/              # Kubernetes manifests
-├── docs/             # Specs & requirements
-├── architecture/     # Architecture docs
-├── wireframes/       # UI wireframes
-├── project-tracking/ # Obsidian-compatible task tracking
-└── CLAUDE.md         # THIS FILE - AI session context
+docs/README.md                          <- Start here for full map
+docs/features/01-15 *.md                <- 15 feature spec docs
+docs/architecture/DATABASE_AND_API.md   <- 50+ tables, 150 endpoints
+docs/requirements/FUNDAMENTAL_REQUIREMENTS.md <- 275 FR + 35 NFR
+docs/wireframes/ALL_WIREFRAMES.md       <- 17 screens
+project-tracking/TASK_BOARD.md          <- Jira-style tasks (250+ subtasks)
+project-tracking/SPRINT_CURRENT.md      <- Current sprint kanban
+```
+
+## Commands
+```bash
+pnpm typecheck          # 8/8 tasks pass
+pnpm build              # all tasks pass
+pnpm dev                # start all apps
+./scripts/setup.sh      # bootstrap Docker + DB + seed
+./scripts/teardown.sh   # stop everything
+cd apps/api && npx tsx src/index.ts  # start API on :3001
 ```

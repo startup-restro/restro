@@ -22,7 +22,7 @@
 **Priority**: P0 - CRITICAL PATH | **Sprint**: 0 | **Estimate**: 1 week
 **Owner**: Full Team | **Dependencies**: None
 
-### RV-001: Monorepo Scaffold ⚪
+### RV-001: Monorepo Scaffold 🟢
 > Set up turborepo/pnpm workspace with all apps and packages
 
 | ID | Task | Priority | Est | Status | Depends |
@@ -47,7 +47,7 @@
 
 ---
 
-### RV-002: Docker Dev Environment ⚪
+### RV-002: Docker Dev Environment 🟢
 > One-command local dev setup with all services
 
 | ID | Task | Priority | Est | Status | Depends |
@@ -68,7 +68,7 @@
 
 ---
 
-### RV-003: CI/CD Pipeline ⚪
+### RV-003: CI/CD Pipeline 🟢
 > GitHub Actions for lint, test, build, deploy
 
 | ID | Task | Priority | Est | Status | Depends |
@@ -80,7 +80,7 @@
 
 ---
 
-### RV-004: Database Schema & Migrations ⚪
+### RV-004: Database Schema & Migrations 🟢
 > Implement full PostgreSQL schema with Drizzle ORM
 
 | ID | Task | Priority | Est | Status | Depends |
@@ -115,7 +115,7 @@
 **Priority**: P0 - CRITICAL PATH | **Sprint**: 1 | **Estimate**: 1 week
 **Owner**: Backend | **Dependencies**: Epic 0
 
-### RV-005: Phone OTP Authentication ⚪
+### RV-005: Phone OTP Authentication 🟢
 > FR-001, FR-002, FR-008, FR-014
 
 | ID | Task | Priority | Est | Status | Depends |
@@ -139,7 +139,7 @@
 
 ---
 
-### RV-006: RBAC Permission System ⚪
+### RV-006: RBAC Permission System 🟢
 > FR-157, FR-158
 
 | ID | Task | Priority | Est | Status | Depends |
@@ -153,7 +153,7 @@
 
 ---
 
-### RV-007: Restaurant Onboarding ⚪
+### RV-007: Restaurant Onboarding 🟢
 > FR-003, FR-010, FR-011
 
 | ID | Task | Priority | Est | Status | Depends |
@@ -170,7 +170,7 @@
 **Priority**: P0 - CRITICAL PATH | **Sprint**: 1-2 | **Estimate**: 1.5 weeks
 **Owner**: Backend + Frontend | **Dependencies**: Epic 1
 
-### RV-008: Menu CRUD API ⚪
+### RV-008: Menu CRUD API 🟢
 > FR-046 to FR-049, FR-055, FR-063, FR-067
 
 | ID | Task | Priority | Est | Status | Depends |
@@ -712,8 +712,8 @@
 
 | Sprint | Planned | Completed | Velocity | Notes |
 |--------|---------|-----------|----------|-------|
-| S0 | - | - | - | Not started |
-| S1 | - | - | - | |
+| S0 | 4 stories | 4 | 4 | Foundation complete (monorepo, docker, CI, DB) |
+| S1 | 4 stories | 4 | 4 | Auth, RBAC, menu, restaurants - runtime verified |
 | S2 | - | - | - | |
 | S3 | - | - | - | |
 | S4 | - | - | - | |
@@ -741,6 +741,6 @@ Epic 0 (Foundation)
 
 ---
 
-*Last updated: 2026-06-02*
+*Last updated: 2026-06-03*
 *Total estimated effort: ~520 hours (14 weeks, 1 developer)*
 *With 2 developers: ~8-9 weeks realistic*
