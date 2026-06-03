@@ -9,6 +9,9 @@ import jwtPlugin from './plugins/jwt.js';
 import authRoutes from './routes/auth.js';
 import restaurantRoutes from './routes/restaurants.js';
 import menuRoutes from './routes/menu.js';
+import orderRoutes from './routes/orders.js';
+import tableRoutes from './routes/tables.js';
+import kitchenRoutes from './routes/kitchen.js';
 
 export async function buildApp() {
   const app = Fastify({
@@ -67,6 +70,15 @@ export async function buildApp() {
 
   // Menu routes
   await app.register(menuRoutes, { prefix: '/menu' });
+
+  // Order routes
+  await app.register(orderRoutes, { prefix: '/orders' });
+
+  // Table & Space routes (self-prefixed with /spaces and /tables)
+  await app.register(tableRoutes);
+
+  // Kitchen (KDS) routes
+  await app.register(kitchenRoutes, { prefix: '/kitchen' });
 
   return app;
 }

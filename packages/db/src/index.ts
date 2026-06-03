@@ -12,3 +12,6 @@ export const db = drizzle(queryClient, { schema });
 export type Database = typeof db;
 
 export { schema };
+
+// Re-export all schema tables, enums, and relations for direct imports
+export * from './schema/index.js';
