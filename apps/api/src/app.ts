@@ -46,7 +46,7 @@ export async function buildApp() {
   // ── Routes ─────────────────────────────────────────────────────────────────
 
   // Health check
-  app.get('/health', async () => {
+  app.get('/health', { schema: { tags: ['System'], summary: 'Health check' } }, async () => {
     return {
       status: 'ok',
       timestamp: new Date().toISOString(),
@@ -55,7 +55,7 @@ export async function buildApp() {
   });
 
   // API root
-  app.get('/', async () => {
+  app.get('/', { schema: { tags: ['System'], summary: 'API info', hide: true } }, async () => {
     return {
       name: 'RestroVerse API',
       version: '0.1.0',
