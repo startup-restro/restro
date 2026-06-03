@@ -67,6 +67,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     '/send-otp',
     {
       schema: {
+        tags: ['Auth'],
         body: {
           type: 'object',
           required: ['phone', 'countryCode'],
@@ -119,6 +120,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     '/verify-otp',
     {
       schema: {
+        tags: ['Auth'],
         body: {
           type: 'object',
           required: ['phone', 'otp'],
@@ -240,6 +242,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     '/refresh',
     {
       schema: {
+        tags: ['Auth'],
         body: {
           type: 'object',
           required: ['refreshToken'],
@@ -324,6 +327,8 @@ export default async function authRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate],
       schema: {
+        tags: ['Auth'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           required: ['pin'],
@@ -391,6 +396,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     '/me',
     {
       preHandler: [fastify.authenticate],
+      schema: { tags: ['Auth'], security: [{ bearerAuth: [] }] },
     },
     async (request, reply) => {
       const currentUser = request.user!;
@@ -454,6 +460,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     '/logout',
     {
       preHandler: [fastify.authenticate],
+      schema: { tags: ['Auth'], security: [{ bearerAuth: [] }] },
     },
     async (request, _reply) => {
       const currentUser = request.user!;

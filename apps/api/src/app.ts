@@ -2,6 +2,7 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
 import { env } from './config/env.js';
+import swaggerPlugin from './plugins/swagger.js';
 import dbPlugin from './plugins/db.js';
 import redisPlugin from './plugins/redis.js';
 import jwtPlugin from './plugins/jwt.js';
@@ -21,6 +22,9 @@ export async function buildApp() {
     origin: true,
     credentials: true,
   });
+
+  // Swagger (must be registered before routes)
+  await app.register(swaggerPlugin);
 
   // Database & Redis
   await app.register(dbPlugin);

@@ -81,7 +81,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
 
   fastify.get(
     '/categories',
-    { preHandler: [fastify.authenticate] },
+    { preHandler: [fastify.authenticate], schema: { tags: ['Menu'], security: [{ bearerAuth: [] }] } },
     async (request) => {
       await fastify.db.execute(
         sql`SELECT set_config('app.restaurant_id', ${request.user!.restaurantId}, true)`,
@@ -104,6 +104,8 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
       schema: {
+        tags: ['Menu'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           required: ['name'],
@@ -141,6 +143,8 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
       schema: {
+        tags: ['Menu'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           properties: {
@@ -185,6 +189,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     '/categories/:id',
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
+      schema: { tags: ['Menu'], security: [{ bearerAuth: [] }] },
     },
     async (request, reply) => {
       const { id } = request.params;
@@ -219,6 +224,8 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
       schema: {
+        tags: ['Menu'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           required: ['items'],
@@ -272,7 +279,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
 
   fastify.get<{ Querystring: ItemsQuery }>(
     '/items',
-    { preHandler: [fastify.authenticate] },
+    { preHandler: [fastify.authenticate], schema: { tags: ['Menu'], security: [{ bearerAuth: [] }] } },
     async (request) => {
       const { category_id, search, is_available, page = '1', limit = '50' } = request.query;
       const offset = (parseInt(page, 10) - 1) * parseInt(limit, 10);
@@ -353,7 +360,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
 
   fastify.get<{ Params: { id: string } }>(
     '/items/:id',
-    { preHandler: [fastify.authenticate] },
+    { preHandler: [fastify.authenticate], schema: { tags: ['Menu'], security: [{ bearerAuth: [] }] } },
     async (request, reply) => {
       const { id } = request.params;
 
@@ -409,6 +416,8 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
       schema: {
+        tags: ['Menu'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           required: ['categoryId', 'name', 'basePrice'],
@@ -455,6 +464,8 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
       schema: {
+        tags: ['Menu'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           properties: {
@@ -508,6 +519,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     '/items/:id',
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
+      schema: { tags: ['Menu'], security: [{ bearerAuth: [] }] },
     },
     async (request, reply) => {
       const { id } = request.params;
@@ -540,6 +552,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     '/items/:id/toggle-availability',
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
+      schema: { tags: ['Menu'], security: [{ bearerAuth: [] }] },
     },
     async (request, reply) => {
       const { id } = request.params;
@@ -582,7 +595,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
 
   fastify.get<{ Params: { itemId: string } }>(
     '/items/:itemId/variants',
-    { preHandler: [fastify.authenticate] },
+    { preHandler: [fastify.authenticate], schema: { tags: ['Menu'], security: [{ bearerAuth: [] }] } },
     async (request) => {
       const { itemId } = request.params;
 
@@ -601,6 +614,8 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
       schema: {
+        tags: ['Menu'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           required: ['name'],
@@ -636,6 +651,8 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
       schema: {
+        tags: ['Menu'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           properties: {
@@ -676,6 +693,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     '/items/:itemId/variants/:variantId',
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
+      schema: { tags: ['Menu'], security: [{ bearerAuth: [] }] },
     },
     async (request, reply) => {
       const { variantId, itemId } = request.params;
@@ -706,7 +724,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
 
   fastify.get(
     '/modifiers',
-    { preHandler: [fastify.authenticate] },
+    { preHandler: [fastify.authenticate], schema: { tags: ['Menu'], security: [{ bearerAuth: [] }] } },
     async (request) => {
       await fastify.db.execute(
         sql`SELECT set_config('app.restaurant_id', ${request.user!.restaurantId}, true)`,
@@ -727,6 +745,8 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
       schema: {
+        tags: ['Menu'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           required: ['name'],
@@ -765,6 +785,8 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
       schema: {
+        tags: ['Menu'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           properties: {
@@ -810,6 +832,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     '/modifiers/:id',
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
+      schema: { tags: ['Menu'], security: [{ bearerAuth: [] }] },
     },
     async (request, reply) => {
       const { id } = request.params;
@@ -847,6 +870,8 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
       schema: {
+        tags: ['Menu'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           required: ['modifier_ids'],
@@ -880,6 +905,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
     '/items/:id/modifiers/:modifierId',
     {
       preHandler: [fastify.authenticate, requirePermission(PERMISSIONS.MENU_MANAGE)],
+      schema: { tags: ['Menu'], security: [{ bearerAuth: [] }] },
     },
     async (request, reply) => {
       const { id, modifierId } = request.params;
@@ -910,6 +936,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
 
   fastify.get<{ Params: { slug: string } }>(
     '/public/:slug',
+    { schema: { tags: ['Menu'] } },
     async (request, reply) => {
       const { slug } = request.params;
 

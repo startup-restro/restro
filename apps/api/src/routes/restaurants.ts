@@ -96,6 +96,7 @@ export default async function restaurantRoutes(fastify: FastifyInstance) {
     '/',
     {
       schema: {
+        tags: ['Restaurants'],
         body: {
           type: 'object',
           required: ['name', 'country'],
@@ -177,6 +178,7 @@ export default async function restaurantRoutes(fastify: FastifyInstance) {
     '/:id',
     {
       preHandler: [fastify.authenticate],
+      schema: { tags: ['Restaurants'], security: [{ bearerAuth: [] }] },
     },
     async (request, reply) => {
       const { id } = request.params;
@@ -202,6 +204,8 @@ export default async function restaurantRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate, requireRole('owner', 'manager')],
       schema: {
+        tags: ['Restaurants'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           properties: {
@@ -245,6 +249,8 @@ export default async function restaurantRoutes(fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate, requireRole('owner')],
       schema: {
+        tags: ['Restaurants'],
+        security: [{ bearerAuth: [] }],
         body: {
           type: 'object',
           properties: {
@@ -297,6 +303,7 @@ export default async function restaurantRoutes(fastify: FastifyInstance) {
     '/:id/complete-onboarding',
     {
       preHandler: [fastify.authenticate],
+      schema: { tags: ['Restaurants'], security: [{ bearerAuth: [] }] },
     },
     async (request, reply) => {
       const { id } = request.params;
