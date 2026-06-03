@@ -210,7 +210,7 @@
 **Priority**: P0 - CRITICAL PATH | **Sprint**: 2-3 | **Estimate**: 2 weeks
 **Owner**: Backend + Frontend | **Dependencies**: Epic 2
 
-### RV-010: Order CRUD API ⚪
+### RV-010: Order CRUD API 🟢
 > FR-016 to FR-044
 
 | ID | Task | Priority | Est | Status | Depends |
@@ -263,7 +263,7 @@
 **Priority**: P0 | **Sprint**: 3 | **Estimate**: 1 week
 **Owner**: Backend + Frontend | **Dependencies**: Epic 3
 
-### RV-012: Kitchen API ⚪
+### RV-012: Kitchen API 🟢
 > FR-086 to FR-100
 
 | ID | Task | Priority | Est | Status | Depends |
@@ -374,7 +374,7 @@
 **Priority**: P0 | **Sprint**: 3-4 | **Estimate**: 1 week
 **Owner**: Backend + Frontend | **Dependencies**: Epic 3
 
-### RV-018: Table Management API ⚪
+### RV-018: Table Management API 🟢
 > FR-071 to FR-085
 
 | ID | Task | Priority | Est | Status | Depends |
@@ -714,7 +714,7 @@
 |--------|---------|-----------|----------|-------|
 | S0 | 4 stories | 4 | 4 | Foundation complete (monorepo, docker, CI, DB) |
 | S1 | 4 stories | 4 | 4 | Auth, RBAC, menu, restaurants - runtime verified |
-| S2 | - | - | - | |
+| S2 | 3 stories | 3 | 3 | Orders, Tables, Kitchen - lifecycle tested |
 | S3 | - | - | - | |
 | S4 | - | - | - | |
 | S5 | - | - | - | |

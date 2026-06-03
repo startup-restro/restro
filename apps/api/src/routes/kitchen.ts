@@ -1,5 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import { eq, and, sql, desc, asc, ne, gte, lte, count } from 'drizzle-orm';
+import { eq, and, sql, desc, asc, ne, gte, lte, count, inArray } from 'drizzle-orm';
 import { kitchenTickets, orders, orderItems, tables } from '@restroverse/db';
 import { requirePermission } from '../middleware/rbac.js';
 
@@ -464,10 +464,10 @@ async function kitchenRoutes(fastify: FastifyInstance) {
         if (newStatus === 'ready') {
           itemUpdate.preparedAt = new Date();
         }
-        // Use raw SQL for IN clause since we need dynamic array
-        await fastify.db.execute(
-          sql`UPDATE order_items SET status = ${newStatus}${newStatus === 'ready' ? sql`, prepared_at = NOW()` : sql``} WHERE id = ANY(${orderItemIds}::uuid[])`,
-        );
+        await fastify.db
+          .update(orderItems)
+          .set(itemUpdate as any)
+          .where(inArray(orderItems.id, orderItemIds));
       }
 
       return { ticket: updated };
@@ -572,9 +572,14 @@ async function kitchenRoutes(fastify: FastifyInstance) {
         .filter(Boolean) as string[];
 
       if (orderItemIds.length > 0) {
-        await fastify.db.execute(
-          sql`UPDATE order_items SET status = ${nextStatus}${nextStatus === 'ready' ? sql`, prepared_at = NOW()` : sql``} WHERE id = ANY(${orderItemIds}::uuid[])`,
-        );
+        const itemUpdate: Record<string, unknown> = { status: nextStatus };
+        if (nextStatus === 'ready') {
+          itemUpdate.preparedAt = new Date();
+        }
+        await fastify.db
+          .update(orderItems)
+          .set(itemUpdate as any)
+          .where(inArray(orderItems.id, orderItemIds));
       }
 
       return { ticket: updated, previousStatus, newStatus: nextStatus };
