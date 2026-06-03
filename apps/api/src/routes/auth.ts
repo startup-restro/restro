@@ -79,10 +79,9 @@ export default async function authRoutes(fastify: FastifyInstance) {
     },
     async (request, reply) => {
       const { phone, countryCode } = request.body;
-      const fullPhone = `${countryCode}${phone}`;
 
       // Rate limit: max 5 attempts per hour
-      const attemptKey = `otp-attempts:${fullPhone}`;
+      const attemptKey = `otp-attempts:${phone}`;
       const attempts = await fastify.redis.get(attemptKey);
       if (attempts && parseInt(attempts, 10) >= 5) {
         return reply.code(429).send({
@@ -93,7 +92,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
 
       // Generate and store OTP
       const otp = generateOtp();
-      const otpKey = `otp:${fullPhone}`;
+      const otpKey = `otp:${phone}`;
 
       await fastify.redis.setex(otpKey, 300, otp); // 5 min TTL
       await fastify.redis.incr(attemptKey);
@@ -102,12 +101,12 @@ export default async function authRoutes(fastify: FastifyInstance) {
         await fastify.redis.expire(attemptKey, 3600); // 1 hour
       }
 
-      // Send OTP
+      // Send OTP (countryCode used for SMS gateway routing)
       if (env.NODE_ENV === 'development') {
-        fastify.log.info({ phone: fullPhone, otp }, 'OTP generated (dev mode)');
+        fastify.log.info({ phone, countryCode, otp }, 'OTP generated (dev mode)');
       } else {
         // TODO: Integrate SMS gateway (e.g., Sparrow SMS for Nepal)
-        fastify.log.info({ phone: fullPhone }, 'Sending OTP via SMS gateway');
+        fastify.log.info({ phone, countryCode }, 'Sending OTP via SMS gateway');
       }
 
       return { success: true, message: 'OTP sent' };

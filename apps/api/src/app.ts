@@ -6,6 +6,8 @@ import dbPlugin from './plugins/db.js';
 import redisPlugin from './plugins/redis.js';
 import jwtPlugin from './plugins/jwt.js';
 import authRoutes from './routes/auth.js';
+import restaurantRoutes from './routes/restaurants.js';
+import menuRoutes from './routes/menu.js';
 
 export async function buildApp() {
   const app = Fastify({
@@ -55,6 +57,12 @@ export async function buildApp() {
 
   // Auth routes
   await app.register(authRoutes, { prefix: '/auth' });
+
+  // Restaurant routes
+  await app.register(restaurantRoutes, { prefix: '/restaurants' });
+
+  // Menu routes
+  await app.register(menuRoutes, { prefix: '/menu' });
 
   return app;
 }

@@ -1,5 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import { eq, and, ilike, desc, asc, sql } from 'drizzle-orm';
+import { eq, and, ilike, inArray, desc, asc, sql } from 'drizzle-orm';
 import {
   restaurants,
   menuCategories,
@@ -304,13 +304,13 @@ export default async function menuRoutes(fastify: FastifyInstance) {
         const variants = await fastify.db
           .select()
           .from(menuVariants)
-          .where(sql`${menuVariants.menuItemId} = ANY(${itemIds})`)
+          .where(inArray(menuVariants.menuItemId, itemIds))
           .orderBy(asc(menuVariants.sortOrder));
 
         const itemModifierLinks = await fastify.db
           .select()
           .from(menuItemModifiers)
-          .where(sql`${menuItemModifiers.menuItemId} = ANY(${itemIds})`);
+          .where(inArray(menuItemModifiers.menuItemId, itemIds));
 
         const modifierIds = [...new Set(itemModifierLinks.map((l) => l.modifierId))];
 
@@ -319,7 +319,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
           modifiers = await fastify.db
             .select()
             .from(menuModifiers)
-            .where(sql`${menuModifiers.id} = ANY(${modifierIds})`);
+            .where(inArray(menuModifiers.id, modifierIds));
         }
 
         // Group by item
@@ -395,7 +395,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
         modifiers = await fastify.db
           .select()
           .from(menuModifiers)
-          .where(sql`${menuModifiers.id} = ANY(${modifierIds})`);
+          .where(inArray(menuModifiers.id, modifierIds));
       }
 
       return { ...item, variants, modifiers };
@@ -967,7 +967,7 @@ export default async function menuRoutes(fastify: FastifyInstance) {
           .from(menuVariants)
           .where(
             and(
-              sql`${menuVariants.menuItemId} = ANY(${itemIds})`,
+              inArray(menuVariants.menuItemId, itemIds),
               eq(menuVariants.isAvailable, true),
             ),
           )
@@ -977,14 +977,14 @@ export default async function menuRoutes(fastify: FastifyInstance) {
         const links = await fastify.db
           .select()
           .from(menuItemModifiers)
-          .where(sql`${menuItemModifiers.menuItemId} = ANY(${itemIds})`);
+          .where(inArray(menuItemModifiers.menuItemId, itemIds));
 
         const modifierIds = [...new Set(links.map((l) => l.modifierId))];
         if (modifierIds.length > 0) {
           modifiers = await fastify.db
             .select()
             .from(menuModifiers)
-            .where(sql`${menuModifiers.id} = ANY(${modifierIds})`);
+            .where(inArray(menuModifiers.id, modifierIds));
         }
 
         // Build modifier map per item
