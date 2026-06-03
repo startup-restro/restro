@@ -11,10 +11,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "declaration": true,
-    "declarationMap": true,
     "sourceMap": true,
-    "composite": true,
-    "incremental": true,
     "paths": {
       "@restroverse/shared": ["./packages/shared/src"],
       "@restroverse/shared/*": ["./packages/shared/src/*"],

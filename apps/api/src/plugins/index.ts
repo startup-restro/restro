@@ -1,3 +1,4 @@
-// Fastify plugins will be registered here
-// e.g., authentication, authorization, error handling
-export {};
+// Fastify plugins
+export { default as dbPlugin } from './db.js';
+export { default as redisPlugin } from './redis.js';
+export { default as jwtPlugin } from './jwt.js';
