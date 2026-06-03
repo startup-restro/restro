@@ -1,3 +1,13 @@
-// Schema definitions will be added here
-// e.g., restaurants, users, menus, orders, bills, etc.
-export {};
+export * from './enums.js';
+export * from './restaurants.js';
+export * from './menu.js';
+export * from './tables.js';
+export * from './orders.js';
+export * from './billing.js';
+export * from './customers.js';
+export * from './inventory.js';
+export * from './staff.js';
+export * from './delivery.js';
+export * from './config.js';
+export * from './audit.js';
+export * from './relations.js';
